@@ -1,4 +1,3 @@
-import React from 'react'
 import { Scanner } from './components/Scanner'
 import { History } from './components/History'
 import { FileText } from 'lucide-react'

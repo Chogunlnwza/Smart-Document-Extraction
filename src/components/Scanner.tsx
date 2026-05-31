@@ -1,10 +1,10 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { Camera, RefreshCw, UploadCloud, CheckCircle, Loader2, FileImage } from 'lucide-react';
 import { waitForOpenCV, cropDocument } from '../lib/opencv-helper';
 import { model, base64ToGenerativePart } from '../lib/gemini';
 import { supabase } from '../lib/supabase';
-import { cn } from '../lib/utils';
+
 
 interface ScannerProps {
   onSuccess?: (data: any) => void;
@@ -13,7 +13,7 @@ interface ScannerProps {
 export function Scanner({ onSuccess }: ScannerProps) {
   const webcamRef = useRef<Webcam>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [, setCapturedImage] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [openCvReady, setOpenCvReady] = useState(false);
@@ -153,7 +153,7 @@ Structure the JSON like this:
 
       const extension = mimeType === 'application/pdf' ? 'pdf' : (mimeType.split('/')[1] || 'jpg');
       const fileName = `${Date.now()}-doc.${extension}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('document-images')
         .upload(fileName, blob, { contentType: mimeType });
 
