@@ -10,7 +10,7 @@
 
 🌐 **Live Demo:** [https://smart-document-extraction.vercel.app](https://smart-document-extraction.vercel.app)
 <div align="center">
-  <p> </p>
+  <p>An AI-powered web app that automatically scans, crops, and extracts structured data from documents (ID cards, receipts, etc.) using Google Gemini 3.5, featuring secure authentication and private scan history via Supabase.</p>
   <a href="#english">English</a> | <a href="#ภาษาไทย">ภาษาไทย</a>
 </div>
 
