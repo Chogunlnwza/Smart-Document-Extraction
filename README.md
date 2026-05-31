@@ -9,24 +9,14 @@
 ![Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 
 🌐 **Live Demo:** [https://smart-document-extraction.vercel.app](https://smart-document-extraction.vercel.app)
+<div align="center">
+  <p> </p>
+  <a href="#english">English</a> | <a href="#ภาษาไทย">ภาษาไทย</a>
+</div>
 
 ---
 
-## 🇹🇭 ภาษาไทย (Thai)
-
-**Smart Document Extraction** เป็นเว็บแอปพลิเคชันอัจฉริยะที่ช่วยให้คุณสามารถสแกนเอกสารด้วยกล้อง หรืออัปโหลดรูปภาพเอกสาร เพื่อดึงข้อมูลสำคัญออกมาจัดเรียงในรูปแบบโครงสร้าง (JSON/Key-Value) ได้อย่างแม่นยำ โดยใช้ขุมพลังของ **Google Gemini AI** ควบคู่กับการจัดเก็บข้อมูลอย่างปลอดภัยด้วย **Supabase**
-
-### ✨ ฟีเจอร์หลัก (Features)
-- **AI Document Extraction:** ดึงข้อมูลจากเอกสารทุกประเภท (บัตรประชาชน, ใบเสร็จ, นามบัตร, ฯลฯ) และวิเคราะห์โครงสร้างข้อมูลอัตโนมัติด้วย Gemini 3.5 Flash
-- **Smart Auto-Cropping:** ตรวจจับขอบกระดาษและครอปรูปให้อัตโนมัติด้วยเทคโนโลยี OpenCV.js
-- **Secure Authentication:** ระบบลงทะเบียนและเข้าสู่ระบบที่ปลอดภัย (รองรับ Email/Password และ Sign in with Google)
-- **Private Scan History:** ประวัติการสแกนจะถูกจัดเก็บแยกตามบัญชีผู้ใช้งาน พร้อมระบบ Row Level Security (RLS) ปกป้องข้อมูลส่วนตัว
-- **Cloud Storage:** อัปโหลดและเก็บรูปภาพเอกสารที่ถูกครอปแล้วไว้บน Supabase Storage
-- **Fully Responsive:** ใช้งานได้ไหลลื่นทั้งบนคอมพิวเตอร์และกล้องโทรศัพท์มือถือ
-
----
-
-## 🇬🇧 English
+<h2 id="english">English Version</h2>
 
 **Smart Document Extraction** is an intelligent web application that allows you to scan documents via camera or upload document images to accurately extract key information into a structured format. Powered by **Google Gemini AI** for data extraction and **Supabase** for secure backend storage.
 
@@ -79,4 +69,18 @@ If you want to run this project locally, follow these steps:
 - **Deployment:** Vercel / GitHub Pages
 
 ---
-*Developed with ❤️*
+<h2 id="ภาษาไทย">ภาษาไทย</h2>
+
+**Smart Document Extraction** เป็นเว็บแอปพลิเคชันอัจฉริยะที่ช่วยให้คุณสามารถสแกนเอกสารด้วยกล้อง หรืออัปโหลดรูปภาพเอกสาร เพื่อดึงข้อมูลสำคัญออกมาจัดเรียงในรูปแบบโครงสร้าง (JSON/Key-Value) ได้อย่างแม่นยำ โดยใช้ขุมพลังของ **Google Gemini AI** ควบคู่กับการจัดเก็บข้อมูลอย่างปลอดภัยด้วย **Supabase**
+
+### ✨ ฟีเจอร์หลัก (Features)
+- **AI Document Extraction:** ดึงข้อมูลจากเอกสารทุกประเภท (บัตรประชาชน, ใบเสร็จ, นามบัตร, ฯลฯ) และวิเคราะห์โครงสร้างข้อมูลอัตโนมัติด้วย Gemini 3.5 Flash
+- **Smart Auto-Cropping:** ตรวจจับขอบกระดาษและครอปรูปให้อัตโนมัติด้วยเทคโนโลยี OpenCV.js
+- **Secure Authentication:** ระบบลงทะเบียนและเข้าสู่ระบบที่ปลอดภัย (รองรับ Email/Password และ Sign in with Google)
+- **Private Scan History:** ประวัติการสแกนจะถูกจัดเก็บแยกตามบัญชีผู้ใช้งาน พร้อมระบบ Row Level Security (RLS) ปกป้องข้อมูลส่วนตัว
+- **Cloud Storage:** อัปโหลดและเก็บรูปภาพเอกสารที่ถูกครอปแล้วไว้บน Supabase Storage
+- **Fully Responsive:** ใช้งานได้ไหลลื่นทั้งบนคอมพิวเตอร์และกล้องโทรศัพท์มือถือ
+
+---
+
+*Developed with Panuwit*
