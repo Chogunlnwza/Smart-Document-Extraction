@@ -8,9 +8,10 @@ import { supabase } from '../lib/supabase';
 
 interface ScannerProps {
   onSuccess?: (data: any) => void;
+  session?: any;
 }
 
-export function Scanner({ onSuccess }: ScannerProps) {
+export function Scanner({ onSuccess, session }: ScannerProps) {
   const webcamRef = useRef<Webcam>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [, setCapturedImage] = useState<string | null>(null);
@@ -165,11 +166,12 @@ Structure the JSON like this:
 
       // 5. Save to Database
       const { error: dbError } = await supabase.from('documents').insert({
-        original_image_url: null, // Could save original if needed
+        original_image_url: null,
         cropped_image_url: publicUrlData.publicUrl,
         document_type: extractedJson.document_type || 'Unknown',
         extracted_data: extractedJson.data,
-        status: 'processed'
+        status: 'processed',
+        user_id: session?.user?.id
       });
 
       if (dbError) throw dbError;

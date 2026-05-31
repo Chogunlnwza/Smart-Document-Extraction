@@ -1,8 +1,30 @@
+import { useState, useEffect } from 'react'
 import { Scanner } from './components/Scanner'
 import { History } from './components/History'
-import { FileText } from 'lucide-react'
+import { Auth } from './components/Auth'
+import { FileText, LogOut } from 'lucide-react'
+import { supabase } from './lib/supabase'
 
 function App() {
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Navbar */}
@@ -15,7 +37,16 @@ function App() {
             <span className="font-bold text-xl tracking-tight">DocScanner<span className="text-primary">.ai</span></span>
           </div>
           <div className="flex items-center gap-4">
-            <a href="https://supabase.com" target="_blank" rel="noreferrer" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Powered by Supabase</a>
+            {session && (
+              <button 
+                onClick={handleSignOut}
+                className="text-sm font-medium text-muted-foreground hover:text-red-500 transition-colors flex items-center gap-1"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            )}
+            <a href="https://supabase.com" target="_blank" rel="noreferrer" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:block">Powered by Supabase</a>
           </div>
         </div>
       </header>
@@ -35,11 +66,18 @@ function App() {
           </p>
         </div>
 
-        <div className="w-full max-w-4xl mx-auto">
-          <Scanner />
-        </div>
-        
-        <History />
+        {session ? (
+          <div className="w-full">
+            <div className="w-full max-w-4xl mx-auto">
+              <Scanner session={session} />
+            </div>
+            <History session={session} />
+          </div>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center pt-8">
+            <Auth />
+          </div>
+        )}
       </main>
 
       {/* Footer */}

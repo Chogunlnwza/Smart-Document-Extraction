@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { RefreshCw, Clock, Loader2, FileImage } from 'lucide-react';
+import { RefreshCw, Clock, Loader2, FileImage, Trash2, AlertCircle } from 'lucide-react';
 
 interface DocumentRecord {
   id: string;
@@ -11,16 +11,24 @@ interface DocumentRecord {
   status: string;
 }
 
-export function History() {
+interface HistoryProps {
+  session?: any;
+}
+
+export function History({ session }: HistoryProps) {
   const [documents, setDocuments] = useState<DocumentRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchDocuments = async () => {
+    if (!session?.user?.id) return;
+    
     setLoading(true);
     try {
       const { data, error } = await supabase
         .from('documents')
         .select('*')
+        .eq('user_id', session.user.id)
         .order('created_at', { ascending: false })
         .limit(10); // Fetch the last 10 scans
 
@@ -38,7 +46,48 @@ export function History() {
 
   useEffect(() => {
     fetchDocuments();
-  }, []);
+  }, [session]);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this document?')) return;
+    
+    setIsDeleting(true);
+    try {
+      const { error } = await supabase
+        .from('documents')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', session.user.id);
+        
+      if (error) throw error;
+      setDocuments(docs => docs.filter(doc => doc.id !== id));
+    } catch (err) {
+      console.error('Failed to delete', err);
+      alert('Failed to delete document');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    if (!confirm('Are you sure you want to delete ALL your scan history? This cannot be undone.')) return;
+    
+    setIsDeleting(true);
+    try {
+      const { error } = await supabase
+        .from('documents')
+        .delete()
+        .eq('user_id', session.user.id);
+        
+      if (error) throw error;
+      setDocuments([]);
+    } catch (err) {
+      console.error('Failed to delete all', err);
+      alert('Failed to delete history');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   if (loading && documents.length === 0) {
     return (
@@ -49,30 +98,61 @@ export function History() {
   }
 
   if (documents.length === 0) {
-    return null; // Don't show anything if no history
+    return (
+      <div className="w-full max-w-4xl mx-auto mt-16 p-8 border border-dashed border-border rounded-xl flex flex-col items-center justify-center text-muted-foreground bg-card/50">
+        <Clock className="w-12 h-12 mb-4 opacity-20" />
+        <p>No scan history found.</p>
+        <p className="text-sm">Documents you scan will appear here.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-16 p-4">
+    <div className="w-full max-w-4xl mx-auto mt-16 p-4 relative">
+      {isDeleting && (
+        <div className="absolute inset-0 bg-background/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-xl">
+           <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      )}
+      
       <div className="flex justify-between items-center mb-6 border-b border-border pb-4">
         <h2 className="text-2xl font-bold flex items-center gap-2 text-foreground">
           <Clock className="w-6 h-6 text-primary" />
           Recent Scans
         </h2>
-        <button 
-          onClick={fetchDocuments}
-          disabled={loading}
-          className="p-2 rounded-full hover:bg-muted text-muted-foreground transition-colors disabled:opacity-50"
-          title="Refresh History"
-        >
-          <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={handleDeleteAll}
+            disabled={loading || isDeleting}
+            className="px-3 py-1.5 text-sm bg-red-500/10 text-red-500 hover:bg-red-500/20 rounded-md transition-colors font-medium flex items-center gap-1 disabled:opacity-50"
+          >
+            <Trash2 className="w-4 h-4" />
+            Clear All
+          </button>
+          <button 
+            onClick={fetchDocuments}
+            disabled={loading || isDeleting}
+            className="p-2 rounded-full hover:bg-muted text-muted-foreground transition-colors disabled:opacity-50"
+            title="Refresh History"
+          >
+            <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-6">
         {documents.map((doc) => (
-          <div key={doc.id} className="bg-card border border-border shadow-md rounded-xl overflow-hidden flex flex-col md:flex-row">
+          <div key={doc.id} className="bg-card border border-border shadow-md rounded-xl overflow-hidden flex flex-col md:flex-row relative group">
             
+            {/* Delete button (shows on hover) */}
+            <button 
+              onClick={() => handleDelete(doc.id)}
+              className="absolute top-2 right-2 p-2 bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-md z-10"
+              title="Delete Document"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+
             {/* Image Preview */}
             <div className="w-full md:w-1/3 bg-muted flex items-center justify-center p-4 border-b md:border-b-0 md:border-r border-border min-h-[200px]">
               {doc.cropped_image_url && doc.cropped_image_url.includes('.pdf') ? (
