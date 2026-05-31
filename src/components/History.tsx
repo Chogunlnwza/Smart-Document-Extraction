@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { RefreshCw, Clock, Loader2, FileImage, Trash2, AlertCircle } from 'lucide-react';
+import { RefreshCw, Clock, Loader2, FileImage, Trash2 } from 'lucide-react';
 
 interface DocumentRecord {
   id: string;
