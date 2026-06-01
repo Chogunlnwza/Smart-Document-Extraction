@@ -9,7 +9,7 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 // Use environment variable if set, otherwise fallback to a stable version
-const modelName = import.meta.env.VITE_GEMINI_MODEL || "gemini-2.5-pro";
+const modelName = import.meta.env.VITE_GEMINI_MODEL || "gemini-2.0-flash";
 export const model = genAI.getGenerativeModel({ model: modelName });
 
 // Helper to convert base64 image or File to generative part
