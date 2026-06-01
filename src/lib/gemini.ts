@@ -8,9 +8,8 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
-// Use environment variable if set, otherwise fallback to a stable version
-const modelName = import.meta.env.VITE_GEMINI_MODEL || "gemini-2.0-flash";
-export const model = genAI.getGenerativeModel({ model: modelName });
+// We use gemini-2.5-pro as it's currently stable and avoids the 503 high demand errors.
+export const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
 // Helper to convert base64 image or File to generative part
 export async function fileToGenerativePart(file: File) {
