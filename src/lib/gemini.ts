@@ -9,7 +9,7 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 // We use the new 3.5 Flash model depending on needs, Flash is faster for standard OCR.
-export const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+export const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 // Helper to convert base64 image or File to generative part
 export async function fileToGenerativePart(file: File) {
