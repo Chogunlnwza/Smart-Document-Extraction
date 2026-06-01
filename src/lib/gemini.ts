@@ -16,7 +16,7 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 // We use gemini-2.5-pro as it's currently stable and avoids the 503 high demand errors.
-export const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
+export const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
 // Helper to convert base64 image or File to generative part
 export async function fileToGenerativePart(file: File) {
