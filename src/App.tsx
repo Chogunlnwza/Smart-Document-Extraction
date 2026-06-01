@@ -7,6 +7,11 @@ import { supabase } from './lib/supabase'
 
 function App() {
   const [session, setSession] = useState<any>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleScanSuccess = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -69,9 +74,9 @@ function App() {
         {session ? (
           <div className="w-full">
             <div className="w-full max-w-4xl mx-auto">
-              <Scanner session={session} />
+              <Scanner session={session} onSuccess={handleScanSuccess} />
             </div>
-            <History session={session} />
+            <History session={session} refreshTrigger={refreshTrigger} />
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center pt-8">

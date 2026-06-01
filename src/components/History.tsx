@@ -13,9 +13,10 @@ interface DocumentRecord {
 
 interface HistoryProps {
   session?: any;
+  refreshTrigger?: number;
 }
 
-export function History({ session }: HistoryProps) {
+export function History({ session, refreshTrigger }: HistoryProps) {
   const [documents, setDocuments] = useState<DocumentRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -46,7 +47,7 @@ export function History({ session }: HistoryProps) {
 
   useEffect(() => {
     fetchDocuments();
-  }, [session]);
+  }, [session, refreshTrigger]);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this document?')) return;
