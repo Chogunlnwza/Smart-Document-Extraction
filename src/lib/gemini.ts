@@ -8,8 +8,9 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
-// We use the new 3.5 Flash model depending on needs, Flash is faster for standard OCR.
-export const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+// Use environment variable if set, otherwise fallback to a stable version
+const modelName = import.meta.env.VITE_GEMINI_MODEL || "gemini-2.5-flash";
+export const model = genAI.getGenerativeModel({ model: modelName });
 
 // Helper to convert base64 image or File to generative part
 export async function fileToGenerativePart(file: File) {
